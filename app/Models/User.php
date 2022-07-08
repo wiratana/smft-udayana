@@ -12,6 +12,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const IMAGE_PATH = "public/images/users";
+
     /**
      * The attributes that are mass assignable.
      *
@@ -22,6 +24,7 @@ class User extends Authenticatable
         'email',
         'nik',
         'role',
+        'image_path',
         'password',
     ];
 

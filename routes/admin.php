@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\ChangePasswordController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\User\UserController;
 
 
 /*
@@ -26,5 +27,17 @@ Route::group(['prefix' => 'password', 'as' => 'password.'], function(){
 	Route::post('change', ChangePasswordController::class)->name('change');
 });
 
+# Authenticated User
+Route::group(['middleware' => ['auth']], function(){
+	# Dashboard
+	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+	# User
+    Route::group(['prefix' => 'user', 'as' => 'user.'], function(){
+        Route::group(['middleware' => 'admin'], function(){
+            Route::post('/', [UserController::class, 'store'])->name('store');
+            Route::put('/{user}', [UserController::class, 'update'])->name('update');
+            Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+        });
+    });
+});

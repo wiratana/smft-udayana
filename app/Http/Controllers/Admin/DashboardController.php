@@ -1,21 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Show the application dashboard.
      *
@@ -23,6 +15,8 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $committees = User::where('role', 'committee')->get();
+
+        return view('admin.dashboard', compact('committees'));
     }
 }
